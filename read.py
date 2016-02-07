@@ -5,7 +5,7 @@ import math
 tweets = []
 category = []
 all_words = set()
-# we use a list to store attributes for convenience 
+# we use a list to store attributes for convenience
 attributes = []
 #taking input and preparing
 with open('dataset_v2.csv') as f:
@@ -23,7 +23,7 @@ for tweet in tweets:
 attributes = list(all_words)
 
 
-# function to calculate entropy 
+# function to calculate entropy
 # parameters - dataset, target_attribute
 def calc_entropy(target_attribute):
 	val_freq     = {}
@@ -36,12 +36,12 @@ def calc_entropy(target_attribute):
 			subset_has+=1
 		else:
 			subset_has_not+=1'''
-	
+
 	if ((subset_has)!=0):
-		data_entropy += (-(subset_has)/len(target_attribute)) * math.log((subset_has)/len(target_attribute), 2) 
+		data_entropy += (-(subset_has)/len(target_attribute)) * math.log((subset_has)/len(target_attribute), 2)
 
 	if ((subset_has_not)!=0):
-		data_entropy += (-(subset_has_not)/len(target_attribute)) * math.log((subset_has_not)/len(target_attribute), 2) 
+		data_entropy += (-(subset_has_not)/len(target_attribute)) * math.log((subset_has_not)/len(target_attribute), 2)
 	return data_entropy
 
 def gain(data, attr, target_attr):
@@ -60,7 +60,7 @@ def gain(data, attr, target_attr):
 			target_has.append(target_attr[(tweet)])
 		else:
 			target_has_not.append(target_attr[(tweet)])
-			
+
 
 	# Calculate the sum of the entropy for each subset of records weighted
 	# by their probability of occuring in the training set.
@@ -73,7 +73,7 @@ def gain(data, attr, target_attr):
 
 	# Subtract the entropy of the chosen attribute from the entropy of the
 	# whole data set with respect to the target attribute (and return it)
-	return (calc_entropy(target_attr) - subset_entropy)		
+	return (calc_entropy(target_attr) - subset_entropy)
 
 def best_attribute(data, attributes, target_attribute):
 	list_gain = []
@@ -83,7 +83,7 @@ def best_attribute(data, attributes, target_attribute):
 		new_gain = gain(data, attr, target_attribute)
 		list_gain.append(new_gain)
 		print "in iteration ", i, " of ", total_iter
-		print new_gain 
+		print new_gain
 		i+=1
 	return attributes[list_gain.index(max(list_gain))]
 
@@ -96,7 +96,7 @@ def build_tree(data_set, attributes, target_attr):
 	# if all the samples have the same attribute, we return that attribute
 	if (target_attr.count('0') == len(target_attr)):
 		return '0'
-	elif (target_attr.count('0') == len(target_attr)):
+	elif (target_attr.count('1') == len(target_attr)):
 		return '1'
 	else :
 		# we choose the best attribute
@@ -107,8 +107,8 @@ def build_tree(data_set, attributes, target_attr):
 		subset_has_not = []
 		target_has = []
 		target_has_not = []
-		for tweet in range(len(data)):
-			if (attr in nltk.word_tokenize(data[tweet])):
+		for tweet in range(len(data_set)):
+			if (best in nltk.word_tokenize(data[tweet])):
 				subset_has.append(data[tweet])
 				target_has.append(target_attr[(tweet)])
 			else:

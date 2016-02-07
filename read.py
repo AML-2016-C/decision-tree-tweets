@@ -28,14 +28,15 @@ attributes = list(all_words)
 def calc_entropy(target_attribute):
 	val_freq     = {}
 	data_entropy = 0.0
-	subset_has = 0
-	subset_has_not = 0
+	subset_has = target_attribute.count('1')
+	subset_has_not = target_attribute.count('0')
 	# Calculate the frequency of each of the values in the target attr
-	for i in range(len(target_attribute)):
+	'''for i in range(len(target_attribute)):
 		if (target_attribute[i]=='1'):
 			subset_has+=1
 		else:
-			subset_has_not+=1
+			subset_has_not+=1'''
+	
 	if ((subset_has)!=0):
 		data_entropy += (-(subset_has)/len(target_attribute)) * math.log((subset_has)/len(target_attribute), 2) 
 
@@ -88,4 +89,34 @@ def best_attribute(data, attributes, target_attribute):
 
 
 #testing if best_attribute works
-print best_attribute(tweets, attributes, category)
+#print best_attribute(tweets, attributes, category)
+
+
+def build_tree(data_set, attributes, target_attr):
+	# if all the samples have the same attribute, we return that attribute
+	if (target_attr.count('0') == len(target_attr)):
+		return '0'
+	elif (target_attr.count('0') == len(target_attr)):
+		return '1'
+	else :
+		# we choose the best attribute
+		best = best_attribute(data_set, attributes, target_attr)
+		tree = {best: {}}
+		# we split the dataset based on the best attribute
+		subset_has = []
+		subset_has_not = []
+		target_has = []
+		target_has_not = []
+		for tweet in range(len(data)):
+			if (attr in nltk.word_tokenize(data[tweet])):
+				subset_has.append(data[tweet])
+				target_has.append(target_attr[(tweet)])
+			else:
+				subset_has_not.append(data[tweet])
+				target_has_not.append(target_attr[(tweet)])
+		# we make two recursive calls
+		attributes.remove(best)
+		tree[best]['True'] = build_tree(subset_has, attributes, target_has)
+		tree[best]['False'] = build_tree(subset_has_not, attributes, target_has_not)
+		return tree
+build_tree(tweets, attributes, category)

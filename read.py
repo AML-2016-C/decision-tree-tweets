@@ -82,8 +82,8 @@ def best_attribute(data, attributes, target_attribute):
 	for attr in attributes:
 		new_gain = gain(data, attr, target_attribute)
 		list_gain.append(new_gain)
-		print "in iteration ", i, " of ", total_iter
-		print new_gain
+		#print "in iteration ", i, " of ", total_iter
+		#print new_gain
 		i+=1
 	return attributes[list_gain.index(max(list_gain))]
 
@@ -101,6 +101,7 @@ def build_tree(data_set, attributes, target_attr):
 	else :
 		# we choose the best attribute
 		best = best_attribute(data_set, attributes, target_attr)
+                print "best attribute", best
 		tree = {best: {}}
 		# we split the dataset based on the best attribute
 		subset_has = []
@@ -108,11 +109,11 @@ def build_tree(data_set, attributes, target_attr):
 		target_has = []
 		target_has_not = []
 		for tweet in range(len(data_set)):
-			if (best in nltk.word_tokenize(data[tweet])):
-				subset_has.append(data[tweet])
+			if (best in nltk.word_tokenize(data_set[tweet])):
+				subset_has.append(data_set[tweet])
 				target_has.append(target_attr[(tweet)])
 			else:
-				subset_has_not.append(data[tweet])
+				subset_has_not.append(data_set[tweet])
 				target_has_not.append(target_attr[(tweet)])
 		# we make two recursive calls
 		attributes.remove(best)

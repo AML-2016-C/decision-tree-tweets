@@ -1,0 +1,35 @@
+import csv
+import nltk
+
+tweets = []
+category = []
+occurence_list_1= dict() 
+occurence_list_2= dict() 
+occurence_list_3= dict() 
+
+with open('dataset_v2.csv') as f:
+	read = csv.reader(f)
+	i=0
+	for row in read:
+		tweets.append(row[0])
+		category.append(row[1])
+		i+=1
+
+# function to calculate entropy 
+# parameters - dataset, target_attribute
+def calc_entropy(data_set, target_attribute):
+	val_freq     = {}
+	data_entropy = 0.0
+
+	# Calculate the frequency of each of the values in the target attr
+	for record in data:
+		if (val_freq.has_key(record[target_attr])):
+			val_freq[record[target_attr]] += 1.0
+		else:
+			val_freq[record[target_attr]]  = 1.0
+	#Calculate the entropy of the data for the target attribute
+	for freq in val_freq.values():
+		data_entropy += (-freq/len(data)) * math.log(freq/len(data), 2) 
+	return data_entropy
+
+		
